@@ -19,6 +19,15 @@ const corsOptions = {
 app.use(express.json())
 app.use(cookieParser())
 app.use(cors(corsOptions))
+// handle error
+app.use((err, req,res, next) => {
+  const statusCode = err.statusCode || 500
+  const message = err.message || 'Interval Server Error'
+  return res.status(statusCode).json({
+    success: false, message, statusCode
+  })
+})
+
 
 // routes
 app.use("/api/auth", authRouter)
