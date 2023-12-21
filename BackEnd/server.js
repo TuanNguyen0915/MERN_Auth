@@ -4,18 +4,24 @@ import cookieParser from "cookie-parser"
 import cors from "cors"
 
 // import database
-import "./configs/database.js"
+import "./config/database.js"
+
+// import routes
+import { router as authRouter } from "./routes/auth.js"
 
 const app = express()
-const PORT = process.env.PORT
-const corsOption = {
+const PORT = process.env.PORT || 3001
+const corsOptions = {
   origin: true,
 }
 
 // middleware
 app.use(express.json())
 app.use(cookieParser())
-app.use(cors(corsOption))
+app.use(cors(corsOptions))
+
+// routes
+app.use("/api/auth", authRouter)
 
 app.listen(PORT, () => {
   console.log(`Server is running at port ${PORT}`)
