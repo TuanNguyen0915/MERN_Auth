@@ -56,7 +56,7 @@ const Register = () => {
         >
           {/* USERNAME */}
           <div className="mt-4 flex w-full">
-            <div className="flex w-[80px] items-center justify-center rounded-l-lg bg-slate-700">
+            <div className="flex w-[80px] items-center justify-center rounded-l-lg bg-slate-600">
               <FaUser className="text-[20px] text-white" />
             </div>
             <input
@@ -102,6 +102,22 @@ const Register = () => {
               onChange={handleChange}
             />
           </div>
+          {/* PHOTO */}
+          <div className="flex w-full">
+            <div className="flex w-[80px] items-center justify-center rounded-s-lg bg-slate-700">
+              <FaImage className="text-[20px] text-white" />
+            </div>
+            <input
+              type="file"
+              accept="png, jpeg"
+              placeholder="Password"
+              autoComplete="off"
+              name="photo"
+              value={formData.photo}
+              className=" w-full rounded-e-lg bg-slate-200 p-4 px-8 opacity-50 outline-none focus:opacity-100"
+              onChange={handleChange}
+            />
+          </div>
 
           {/* BUTTON */}
           <button
@@ -118,7 +134,7 @@ const Register = () => {
           <p className="text-[18px]">
             Have an account?{" "}
             <Link to="/login">
-              <span className="pl-2 text-textLink font-semibold">Login</span>
+              <span className="pl-2 font-semibold text-textLink">Login</span>
             </Link>
           </p>
         </div>
