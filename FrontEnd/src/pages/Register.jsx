@@ -5,9 +5,11 @@ import * as authServices from "../services/authServices";
 import { toast } from "react-toastify";
 import { FaLock, FaUser, FaImage } from "react-icons/fa";
 import { IoMailSharp } from "react-icons/io5";
+import { uploadImageToCloudinary } from "../services/uploadToCloudinary";
 
 const Register = () => {
   const navigate = useNavigate();
+  const [previewPhoto, setPreviewPhoto] = useState(null);
   const [loading, setLoading] = useState(false);
   const errMessage = useRef(null);
   const [formData, setFormData] = useState({
@@ -20,6 +22,13 @@ const Register = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+  };
+
+  const handleUploadPhoto = async (e) => {
+    const file = e.target.files[0];
+    const data = await uploadImageToCloudinary(file);
+    setPreviewPhoto(data.url);
+    setFormData({...formData, photo: data.url})
   };
 
   const handleSubmit = async (e) => {
@@ -109,16 +118,24 @@ const Register = () => {
             </div>
             <input
               type="file"
-              accept="png, jpeg"
-              placeholder="Password"
-              autoComplete="off"
+              accept=".png, .jpeg"
               name="photo"
-              value={formData.photo}
               className=" w-full rounded-e-lg bg-slate-200 p-4 px-8 opacity-50 outline-none focus:opacity-100"
-              onChange={handleChange}
+              onChange={handleUploadPhoto}
             />
           </div>
-
+          {/* SHOW UPLOAD PHOTO */}
+          <div className="my-2 p-2">
+            {previewPhoto && (
+              <figure className="border-primaryColor flex h-[120px] w-[120px] items-center justify-center rounded-full border-2 border-slate-500">
+                <img
+                  src={previewPhoto}
+                  alt="avatar"
+                  className="w-full h-full rounded-full object-contain"
+                />
+              </figure>
+            )}
+          </div>
           {/* BUTTON */}
           <button
             disabled={loading}
