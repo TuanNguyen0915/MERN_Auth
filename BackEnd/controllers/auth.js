@@ -48,9 +48,11 @@ const login = async (req, res, next) => {
     }
     //* create token if correct email nad password
     let token = generateToken(user)
-    const {password, ...rest} = user._doc 
+    // set cookie expiryDate and don't show password for api 
+    const {password, ...rest} = user._doc
+    const expiryDate = new Date(Date.now() + 86400000) //1 day = 86400000 ms 
     // add token to browser cookie
-    return res.cookie('access_toke', token, {httpOnly: true}).status(200).json({ success: true, accessToken: token, user: rest })
+    return res.cookie('token', token, {httpOnly: true, expires: expiryDate}).status(200).json({ success: true, accessToken: token, user: rest })
   } catch (error) {
     next(error)
   }
