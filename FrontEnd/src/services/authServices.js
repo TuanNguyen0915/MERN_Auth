@@ -12,7 +12,7 @@ const signUp = async (formData) => {
     const json = await res.json();
     return json
   } catch (error) {
-    throw new Error(error.message);
+    throw new Error(error);
   }
 };
 

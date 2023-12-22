@@ -38,6 +38,7 @@ const Register = () => {
       const data = await authServices.signUp(formData);
       if (!data.success) {
         errMessage.current = data.message;
+        console.log(errMessage.current)
         toast.error(errMessage.current, { position: "top-center" });
       } else {
         toast.success(data.message);
@@ -45,7 +46,7 @@ const Register = () => {
       }
       setLoading(false);
     } catch (error) {
-      throw new Error(error.message);
+      throw new Error(error);
     }
   };
 
