@@ -31,7 +31,7 @@ const register = async (req, res, next) => {
 
 //* ---------------- LOGIN -------------------
 
-const login = async (req, res) => {
+const login = async (req, res, next) => {
   try {
     let user = await User.findOne({ email: req.body.email })
     // check user by email
