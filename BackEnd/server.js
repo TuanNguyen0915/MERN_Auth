@@ -11,14 +11,12 @@ import { router as authRouter } from "./routes/auth.js"
 
 const app = express()
 const PORT = process.env.PORT || 3001
-const corsOptions = {
-  origin: true,
-}
+
 
 // middleware
 app.use(express.json())
 app.use(cookieParser())
-app.use(cors(corsOptions))
+app.use(cors())
 // handle error
 app.use((err, req,res, next) => {
   const statusCode = err.statusCode || 500

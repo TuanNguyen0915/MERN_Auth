@@ -8,10 +8,6 @@ export const navLinks = [
     path: '/profile'
   },
   {
-    name: "About",
-    path: '/about'
-  },
-  {
     name: 'Login',
     path: '/login'
   },

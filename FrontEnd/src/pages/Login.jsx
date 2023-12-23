@@ -5,17 +5,25 @@ import * as authServices from "../services/authServices";
 import { toast } from "react-toastify";
 import { FaLock } from "react-icons/fa";
 import { IoMailSharp } from "react-icons/io5";
+import {
+  signInStart,
+  signInSuccess,
+  signInFailure,
+} from "../redux/user/userSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 const Login = () => {
-  const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
-  const errMessage = useRef(null);
+  const { loading, error } = useSelector((state) => state.user);
   const [formData, setFormData] = useState({
     name: "",
     password: "",
     email: "",
     photo: "",
   });
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const errMessage = useRef(null);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -24,19 +32,21 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
     try {
-      const data = await authServices.signUp(formData);
+      dispatch(signInStart());
+      const data = await authServices.logIn(formData);
       if (!data.success) {
         errMessage.current = data.message;
         toast.error(errMessage.current, { position: "top-center" });
-      } else {
-        toast.success(data.message);
-        navigate("/");
+        dispatch(signInFailure(data));
+        return;
       }
-      setLoading(false);
+      dispatch(signInSuccess(data));
+      toast.success(data.message);
+      navigate("/");
+      //catching err
     } catch (error) {
-      throw new Error(error.message);
+      dispatch(signInFailure(error));
     }
   };
 
@@ -46,8 +56,10 @@ const Login = () => {
         <h1 className="mb-4 text-center text-[28px] font-bold md:text-[48px]">
           LOG IN
         </h1>
-        {/* ERROR MESSAGE, USING TOAST INSTEAD
-        {errMessage.current && <h2 className="mb-4 text-red-600">{errMessage.current}</h2>} */}
+        {/* ERROR MESSAGE, USING TOAST INSTEAD */}
+        <h2 className="mb-4 text-red-600">
+          {error ? error.message || "Something went wrong!" : ""}
+        </h2>
 
         {/* FORM */}
         <form
