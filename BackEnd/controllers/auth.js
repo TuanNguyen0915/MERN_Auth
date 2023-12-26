@@ -55,4 +55,32 @@ const login = async (req, res, next) => {
   }
 }
 
-export { register, login }
+const OAuth = async (req,res, next) => {
+  try {
+    let user = await User.findOne({email: req.body.email})
+    if (user) {
+      const token = generateToken(user._id)
+      const {password, ...rest} = user._doc
+      const expiryDate = new Date(Date.now() + 86400000) //1 day = 86400000 ms 
+      return res.cookie('token', token, {httpOnly: true, expires: expiryDate}).status(200).json({ success: true, message: "Login successful", token, user: rest })
+    } else {
+      //generate Random password for first time and hashing
+      const generatedPassword = Math.random().toString(36).slice(-8)  + Math.random().toString(36).slice(-8)
+      const hashPassword = await bcrypt.hash(generatedPassword, 10)
+      const newUser = await User.create({
+        email: req.body.email,
+        name: req.body.name,
+        password: hashPassword,
+        photo: req.body.photo
+      })
+      const token = generateToken(newUser._id)
+      const {password, ...rest} = newUser._doc
+      const expiryDate = new Date(Date.now() + 86400000) //1 day = 86400000 ms 
+      return res.cookie('token', token, {httpOnly: true, expires: expiryDate}).status(200).json({ success: true, message: "Login successful", token, user: rest })
+    }
+  } catch (error) {
+    next(error)
+  }
+}
+
+export { register, login, OAuth }
