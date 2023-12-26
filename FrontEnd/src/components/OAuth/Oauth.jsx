@@ -2,28 +2,23 @@ import { app } from "../../utils/firebase";
 import { GoogleAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
 import { useDispatch } from "react-redux";
 import { signInSuccess } from "../../redux/user/userSlice";
+import * as authService from "../../services/authServices";
 
 const Oauth = () => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const handleOAuth = async () => {
     try {
       const provider = new GoogleAuthProvider();
       const auth = getAuth(app);
       const result = await signInWithPopup(auth, provider);
-      const res = await fetch("/api/auth/google", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: {
-          email: result.user.email,
-          name: result.user.displayName,
-          photo: result.user.photoURL,
-        },
-      });
-      const data = await res.json()
-      dispatch(signInSuccess(data))
+      const formData = {
+        email: result.user.email,
+        name: result.user.displayName,
+        photo: result.user.photoURL,
+      };
+      const res = await authService.OAuth(formData)
+      dispatch(signInSuccess(res));
     } catch (error) {
       console.log("could not login with google", error);
     }

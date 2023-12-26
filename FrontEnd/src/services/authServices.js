@@ -32,4 +32,20 @@ const logIn = async (formData) => {
   }
 };
 
-export { signUp, logIn };
+const OAuth = async (formData) => {
+  try {
+    const res = await fetch(`${BASE_URL}/google`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    });
+    const json = await res.json();
+    return json;
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
+export { signUp, logIn, OAuth };
