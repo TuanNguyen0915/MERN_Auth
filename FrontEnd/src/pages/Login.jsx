@@ -1,16 +1,20 @@
+// npm modules
 import { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import * as authServices from "../services/authServices";
-import { toast } from "react-toastify";
-import { FaLock } from "react-icons/fa";
-import { IoMailSharp } from "react-icons/io5";
 import {
   signInStart,
   signInSuccess,
   signInFailure,
 } from "../redux/user/userSlice";
 import { useDispatch, useSelector } from "react-redux";
+// toastify and icons
+import { toast } from "react-toastify";
+import { FaLock } from "react-icons/fa";
+import { IoMailSharp } from "react-icons/io5";
+// services and components
+import * as authServices from "../services/authServices";
+import Oauth from "../components/OAuth/Oauth";
 
 const Login = () => {
   const { loading, error } = useSelector((state) => state.user);
@@ -106,9 +110,10 @@ const Login = () => {
             {loading ? "LOADING..." : "LOG IN"}
           </button>
         </form>
-        <button className="mt-4 w-full rounded-lg bg-red-900 p-4 px-8 uppercase text-white hover:bg-red-600 disabled:opacity-70 md:text-[20px]">
-          LOG IN WITH GOOGLE
-        </button>
+        {/* <button className="mt-4 w-full rounded-lg bg-red-900 p-4 px-8 uppercase text-white hover:bg-red-600 disabled:opacity-70 md:text-[20px]">
+          CONTINUE WITH GOOGLE
+        </button> */}
+        <Oauth />
         <div className="mt-5 flex w-full items-center justify-center">
           <p className="text-[18px]">
             Have an account yet?{" "}
