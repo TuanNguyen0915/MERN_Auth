@@ -3,14 +3,13 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import * as authServices from "../services/authServices";
 import { toast } from "react-toastify";
-import { FaLock, FaUser, FaImage } from "react-icons/fa";
+import { FaLock, FaUser} from "react-icons/fa";
 import { IoMailSharp } from "react-icons/io5";
 import { uploadImageToCloudinary } from "../services/uploadToCloudinary";
 import Oauth from "../components/OAuth/Oauth";
-
+import UploadImg from "../components/UploadImg/UploadImg";
 const Register = () => {
   const navigate = useNavigate();
-  const [previewPhoto, setPreviewPhoto] = useState(null);
   const [loading, setLoading] = useState(false);
   const errMessage = useRef(null);
   const [formData, setFormData] = useState({
@@ -25,12 +24,11 @@ const Register = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleUploadPhoto = async (e) => {
-    const file = e.target.files[0];
-    const data = await uploadImageToCloudinary(file);
-    setPreviewPhoto(data.url);
-    setFormData({ ...formData, photo: data.url });
-  };
+  const handleUploadToCloudify = async file => {
+    const uploadedImg = await uploadImageToCloudinary(file)
+    console.log(uploadedImg.url)
+    setFormData({...formData, photo: uploadedImg.url})
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -113,28 +111,7 @@ const Register = () => {
           </div>
           {/* PHOTO */}
           <div className="flex w-full">
-            <div className="flex w-[80px] items-center justify-center rounded-s-lg bg-slate-700">
-              <FaImage className="text-[20px] text-white" />
-            </div>
-            <input
-              type="file"
-              accept=".png, .jpeg"
-              name="photo"
-              className=" w-full rounded-e-lg bg-slate-200 p-4 px-8 opacity-50 outline-none focus:opacity-100"
-              onChange={handleUploadPhoto}
-            />
-          </div>
-          {/* SHOW UPLOAD PHOTO */}
-          <div className="my-2 p-2">
-            {previewPhoto && (
-              <figure className="border-primaryColor flex h-[120px] w-[120px] items-center justify-center rounded-full border-2 border-slate-500">
-                <img
-                  src={previewPhoto}
-                  alt="avatar"
-                  className="h-full w-full rounded-full object-contain"
-                />
-              </figure>
-            )}
+            <UploadImg handleUploadToCloudify={handleUploadToCloudify}/>
           </div>
           {/* BUTTON */}
           <button

@@ -40,15 +40,14 @@ const Profile = () => {
             UPDATE
           </button>
         </form>
-        <div className="w-full  md:w-1/2">
-          <div className="flex w-full items-center justify-between">
-            <Link className="w-full">
-              <p className="text-red-600w text-left">Delete Account</p>
-            </Link>
-            <Link className=" w-full">
-              <p className="text-right text-red-600">Log out</p>
-            </Link>
-          </div>
+
+        <div className="flex w-full items-center justify-between my-4">
+          <Link className="w-full">
+            <p className="text-red-600w text-left">Delete Account</p>
+          </Link>
+          <Link className=" w-full">
+            <p className="text-right text-red-600">Log out</p>
+          </Link>
         </div>
       </div>
     </div>
