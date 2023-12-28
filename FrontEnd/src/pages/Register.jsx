@@ -3,14 +3,16 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import * as authServices from "../services/authServices";
 import { toast } from "react-toastify";
-import { FaLock, FaUser} from "react-icons/fa";
+import { FaLock, FaUser } from "react-icons/fa";
 import { IoMailSharp } from "react-icons/io5";
 import { uploadImageToCloudinary } from "../services/uploadToCloudinary";
 import Oauth from "../components/OAuth/Oauth";
 import UploadImg from "../components/UploadImg/UploadImg";
 const Register = () => {
   const navigate = useNavigate();
+  // const [uploadDone, setUploadDone] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [isDone, setIsDone] = useState(false)
   const errMessage = useRef(null);
   const [formData, setFormData] = useState({
     name: "",
@@ -24,11 +26,13 @@ const Register = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleUploadToCloudify = async file => {
-    const uploadedImg = await uploadImageToCloudinary(file)
+  const handleUploadToCloudify = async (file) => {
+    const uploadedImg = await uploadImageToCloudinary(file);
     console.log(uploadedImg.url)
-    setFormData({...formData, photo: uploadedImg.url})
-  }
+    setFormData({ ...formData, photo: uploadedImg.url });
+    setIsDone(true)
+    setLoading(false)
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -111,7 +115,13 @@ const Register = () => {
           </div>
           {/* PHOTO */}
           <div className="flex w-full">
-            <UploadImg handleUploadToCloudify={handleUploadToCloudify}/>
+            <UploadImg
+              handleUploadToCloudify={handleUploadToCloudify}
+              loading={loading}
+              setLoading={setLoading}
+              isDone={isDone}
+              setIsDone={setIsDone}
+            />
           </div>
           {/* BUTTON */}
           <button

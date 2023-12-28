@@ -2,12 +2,22 @@ import { useState } from "react";
 import { AiFillFileImage } from "react-icons/ai";
 import { MdCloudUpload, MdDelete } from "react-icons/md";
 import { RiImageAddFill } from "react-icons/ri";
-const UploadImg = ({ handleUploadToCloudify }) => {
+import { IoIosCloudDone } from "react-icons/io";
+
+const UploadImg = ({
+  handleUploadToCloudify,
+  loading,
+  setLoading,
+  isDone,
+  setIsDone,
+}) => {
   const [file, setFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
   const [previewName, setPreviewName] = useState(null);
   const handleChange = (e) => {
     e.preventDefault();
+    setLoading(false);
+    setIsDone(false);
     setFile(e.target.files[0]);
     setPreviewName(e.target.files[0].name);
     setPreviewUrl(URL.createObjectURL(e.target.files[0]));
@@ -18,6 +28,7 @@ const UploadImg = ({ handleUploadToCloudify }) => {
   };
 
   const handleSendFile = () => {
+    setLoading(true);
     handleUploadToCloudify(file);
   };
 
@@ -42,14 +53,30 @@ const UploadImg = ({ handleUploadToCloudify }) => {
             <p className="ml-4">{previewName}</p>
           </div>
           <div className="flex w-full items-center justify-between">
-            <button
-              type="button"
-              className=" flex items-center justify-start rounded-md bg-slate-900 p-2 text-white hover:bg-slate-700"
-              onClick={handleSendFile}
-            >
-              <MdCloudUpload />
-              <p className="ml-4">Upload</p>
-            </button>
+            {isDone ? (
+              <button className=" flex items-center justify-start rounded-md bg-slate-900 p-2 text-white hover:bg-slate-700  disabled:cursor-not-allowed disabled:opacity-50">
+                <IoIosCloudDone />
+                <p>Upload done</p>
+              </button>
+            ) : (
+              <>
+                <button
+                  disabled={loading}
+                  type="button"
+                  className=" flex items-center justify-start rounded-md bg-slate-900 p-2 text-white hover:bg-slate-700  disabled:cursor-not-allowed disabled:opacity-50"
+                  onClick={handleSendFile}
+                >
+                  {loading ? (
+                    <p>Uploading ...</p>
+                  ) : (
+                    <>
+                      <MdCloudUpload />
+                      <p className="ml-4">Upload</p>
+                    </>
+                  )}
+                </button>
+              </>
+            )}
             <button
               onClick={handleDeleteImg}
               type="button"
