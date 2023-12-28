@@ -16,6 +16,7 @@ const register = async (req, res, next) => {
     }
     const salt = await bcrypt.genSalt(10)
     const hashPassword = await bcrypt.hash(req.body.password, salt)
+    req.body.photo = req.body.photo?req.body.photo :'https://static-00.iconduck.com/assets.00/user-avatar-icon-512x512-vufpcmdn.png'
     // create user
     user = await User.create({
       name: req.body.name,
