@@ -4,11 +4,11 @@ import { useSelector } from "react-redux";
 const NavBar = () => {
   const { currentUser } = useSelector((state) => state.user);
   return (
-    <div className="container flex items-center justify-between bg-slate-400/50">
-      <h1 className="text-[24px] font-bold text-textLink hover:text-black md:text-[28px]">
+    <div className="container flex items-center justify-between bg-slate-800">
+      <h1 className="text-[24px] font-bold text-textLink hover:text-white md:text-[28px]">
         <NavLink to="/">MERN Auth</NavLink>
       </h1>
-      <ul className="flex items-center justify-between gap-4 font-semibold md:gap-8">
+      <ul className="flex items-center justify-between gap-4 font-semibold text-white md:gap-8">
         <li>
           <NavLink
             to="/"
@@ -20,8 +20,15 @@ const NavBar = () => {
         {currentUser ? (
           <>
             <li>
-              <NavLink to="/profile" className='h-full flex item-center justify-center'>
-               <img src={currentUser.user.photo} alt="" className="h-10 w-10 rounded-full"/>
+              <NavLink
+                to="/profile"
+                className="item-center flex h-full justify-center"
+              >
+                <img
+                  src={currentUser.user.photo}
+                  alt=""
+                  className="h-10 w-10 rounded-full"
+                />
               </NavLink>
             </li>
             <li>

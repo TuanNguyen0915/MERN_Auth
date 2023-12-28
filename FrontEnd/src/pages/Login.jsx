@@ -58,7 +58,7 @@ const Login = () => {
     <div className="container flex w-full items-center justify-center">
       <div className="flex w-full flex-col items-center justify-center md:w-1/2">
         <h1 className="mb-4 text-center text-[28px] font-bold md:text-[48px]">
-          LOG IN
+          Log In
         </h1>
         {/* ERROR MESSAGE, USING TOAST INSTEAD */}
         <h2 className="mb-4 text-red-600">

@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import { FaLock, FaUser, FaImage } from "react-icons/fa";
 import { IoMailSharp } from "react-icons/io5";
 import { uploadImageToCloudinary } from "../services/uploadToCloudinary";
+import Oauth from "../components/OAuth/Oauth";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -28,7 +29,7 @@ const Register = () => {
     const file = e.target.files[0];
     const data = await uploadImageToCloudinary(file);
     setPreviewPhoto(data.url);
-    setFormData({...formData, photo: data.url})
+    setFormData({ ...formData, photo: data.url });
   };
 
   const handleSubmit = async (e) => {
@@ -38,7 +39,7 @@ const Register = () => {
       const data = await authServices.signUp(formData);
       if (!data.success) {
         errMessage.current = data.message;
-        console.log(errMessage.current)
+        console.log(errMessage.current);
         toast.error(errMessage.current, { position: "top-center" });
       } else {
         toast.success(data.message);
@@ -56,8 +57,6 @@ const Register = () => {
         <h1 className="mb-4 text-center text-[28px] font-bold md:text-[48px]">
           Register
         </h1>
-        {/* ERROR MESSAGE, USING TOAST INSTEAD
-        {errMessage.current && <h2 className="mb-4 text-red-600">{errMessage.current}</h2>} */}
 
         {/* FORM */}
         <form
@@ -132,7 +131,7 @@ const Register = () => {
                 <img
                   src={previewPhoto}
                   alt="avatar"
-                  className="w-full h-full rounded-full object-contain"
+                  className="h-full w-full rounded-full object-contain"
                 />
               </figure>
             )}
@@ -145,9 +144,7 @@ const Register = () => {
             {loading ? "Loading..." : "Register"}
           </button>
         </form>
-        <button className="mt-4 w-full rounded-lg bg-red-900 p-4 px-8 uppercase text-white hover:bg-red-600 disabled:opacity-70 md:text-[20px]">
-          REGISTER WITH GOOGLE
-        </button>
+        <Oauth />
         <div className="mt-5 flex w-full items-center justify-center">
           <p className="text-[18px]">
             Have an account?{" "}
