@@ -8,9 +8,12 @@ import { IoMailSharp } from "react-icons/io5";
 import { uploadImageToCloudinary } from "../services/uploadToCloudinary";
 import Oauth from "../components/OAuth/Oauth";
 import UploadImg from "../components/UploadImg/UploadImg";
+import { useDispatch } from "react-redux";
+import { signInSuccess } from "../redux/user/userSlice";
+
 const Register = () => {
   const navigate = useNavigate();
-  // const [uploadDone, setUploadDone] = useState(false);
+  const dispatch = useDispatch()
   const [loading, setLoading] = useState(false);
   const [isDone, setIsDone] = useState(false)
   const errMessage = useRef(null);
@@ -28,7 +31,6 @@ const Register = () => {
 
   const handleUploadToCloudify = async (file) => {
     const uploadedImg = await uploadImageToCloudinary(file);
-    console.log(uploadedImg.url)
     setFormData({ ...formData, photo: uploadedImg.url });
     setIsDone(true)
     setLoading(false)
@@ -46,6 +48,7 @@ const Register = () => {
       } else {
         toast.success(data.message);
         navigate("/");
+        dispatch(signInSuccess(data))
       }
       setLoading(false);
     } catch (error) {
